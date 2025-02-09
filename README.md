@@ -15,13 +15,18 @@ Optional? (because we launch the VLC player directly in the app)
 - Add a password: Preferences > All Settings > Main interfaces > Lua > Lua HTTP > Password
 
 
-## Execution
+## Build & Execution
 
 ```bash
-go run .
+go build .
+./trailer-player
 ```
 
 
 ## Development
+
+```bash
+go run .
+```
 
 - [go-vlc-ctrl](https://github.com/CedArctic/go-vlc-ctrl) - [Documentation](https://pkg.go.dev/github.com/CedArctic/go-vlc-ctrl)
