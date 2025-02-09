@@ -29,4 +29,6 @@ go build .
 go run .
 ```
 
+### Resources
+
 - [go-vlc-ctrl](https://github.com/CedArctic/go-vlc-ctrl) - [Documentation](https://pkg.go.dev/github.com/CedArctic/go-vlc-ctrl)
