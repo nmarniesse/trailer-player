@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"os/exec"
@@ -24,7 +23,7 @@ type Player struct {
 }
 
 func CreatePlayer(host string, port int, tracks []Track) (*Player, error) {
-	fmt.Println("Launch VLC")
+	logInfo("Create VLC player")
 
 	vlcPassword := uuid.New().String()
 
@@ -33,8 +32,7 @@ func CreatePlayer(host string, port int, tracks []Track) (*Player, error) {
 	 * 	--directx-device=\\.\\DISPLAY2
 	 * 	or --qt-fullscreen-screennumber=1 (0 is the first display, 1 the second, ...)
 	 */
-	//  cmd := exec.Command("vlc", "--fullscreen", "--intf", "http", "--extraintf", "qt", "--http-port", strconv.Itoa(port), "--http-password", vlcPassword, "--no-video-title-show", "--no-embedded-video", "--no-qt-fs-controller")
-	cmd := exec.Command("vlc", "--fullscreen", "--intf", "http", "--extraintf", "qt", "--http-port", strconv.Itoa(port), "--http-password", vlcPassword)
+	cmd := exec.Command("vlc", "--fullscreen", "--intf", "http", "--extraintf", "qt", "--http-port", strconv.Itoa(port), "--http-password", vlcPassword, "--no-video-title-show", "--no-embedded-video", "--no-qt-fs-controller")
 	if err := cmd.Start(); err != nil {
 		log.Fatal(err)
 	}
@@ -42,36 +40,36 @@ func CreatePlayer(host string, port int, tracks []Track) (*Player, error) {
 
 	vlc, err := vlcctrl.NewVLC(host, port, vlcPassword)
 	if err != nil {
-		fmt.Println(err)
+		logError(err)
 
 		return nil, err
 	}
 
 	player := Player{vlc: &vlc}
 
-	fmt.Println("Add videos...")
+	logInfo("Add playlist")
 
 	currentDirectory, err := os.Getwd()
 	if err != nil {
-		fmt.Println(err)
+		logError(err)
 
 		return nil, err
 	}
 
 	err = player.vlc.Add("file://" + currentDirectory + blackFile)
 	if err != nil {
-		fmt.Println(err)
+		logError(err)
 	}
 	for _, track := range tracks {
-		fmt.Println("Add file [" + track.fullpath + "] to playlist")
+		logInfo("Add file [" + track.fullpath + "] to playlist")
 		err = player.vlc.Add(track.fullpath)
 		if err != nil {
-			fmt.Println(err)
+			logError(err)
 		}
 	}
 	err = player.vlc.Add("file://" + currentDirectory + blackFile)
 	if err != nil {
-		fmt.Println(err)
+		logError(err)
 	}
 
 	player.vlc.Play()
@@ -90,6 +88,6 @@ func CreatePlayer(host string, port int, tracks []Track) (*Player, error) {
 }
 
 func (player *Player) Start() {
-	fmt.Println("Let's start!")
+	logInfo("Player Start")
 	player.vlc.Play()
 }

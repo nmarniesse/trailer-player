@@ -1,11 +1,7 @@
 package main
 
-import (
-	"fmt"
-)
-
 func main() {
-	fmt.Println("Hello!")
+	logInfo("Start")
 
 	httpPort := 8088
 
@@ -19,5 +15,5 @@ func main() {
 
 	player.Start()
 
-	fmt.Println("End")
+	logInfo("End")
 }
